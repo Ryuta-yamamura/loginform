@@ -1,0 +1,21 @@
+.userform {
+    margin: 0;
+    /* text-align: center; */
+    padding: 10px;
+    display: block;
+    background: rgba(8, 4, 247, 0.616);
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.background {
+    background: #ebe5e5;
+}
+
+.box {
+    border-radius: 71px;
+    background: #ebe5e5;
+    box-shadow:
+     13px 13px 26px #cac5c5,
+    -13px -13px 26px #ffffff;
+}
