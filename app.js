@@ -16,6 +16,9 @@ app.use(cookieParser());
 // 暗号化につかうキー
 const APP_KEY = 'YOUR-SECRET-KEY';
 
+// トップURL
+const APP_URL = process.env.appUrl;
+
 // メール送信設定
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -238,16 +241,19 @@ app.post('/register', registrationValidationRules, (req, res) => {
       .digest('hex');
     const now = new Date();
     const expiration = now.setHours(now.getHours() + 1); // 1時間だけ有効
-    let verificationUrl = req.get('origin') +'/verify/'+ user.id +'/'+ hash +'?expires='+ expiration;
+    let verificationUrl = APP_URL +'/verify/'+ user.id +'/'+ hash +'?expires='+ expiration;
     const signature = crypto.createHmac('sha256', APP_KEY)
       .update(verificationUrl)
       .digest('hex');
     verificationUrl += '&signature='+ signature;
+    console.log(verificationUrl);
 
-    // 本登録メールを送信
+    
+
+    本登録メールを送信
     transporter.sendMail({
       from: 'from@example.com',
-      to: 'to@example.com',
+      to: user.email,
       text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
       subject: '本登録メール',
     });
