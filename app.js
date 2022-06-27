@@ -17,7 +17,7 @@ app.use(cookieParser());
 const APP_KEY = 'YOUR-SECRET-KEY';
 
 // トップURL
-const APP_URL = process.env.appUrl;
+const APP_URL = process.env.APPURL;
 
 // メール送信設定
 const transporter = nodemailer.createTransport({
@@ -250,10 +250,11 @@ app.post('/register', registrationValidationRules, (req, res) => {
 
     
 
-    本登録メールを送信
+    // 本登録メールを送信
     transporter.sendMail({
       from: 'from@example.com',
-      to: user.email,
+      // to: user.email,
+      to: 'to@example.com',
       text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
       subject: '本登録メール',
     });
