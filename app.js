@@ -7,9 +7,10 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 const { check, validationResult } = require('express-validator');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const User = require('./models').User;
+const mailsendModule = require('./mailsend');
 
 app.use(cookieParser());
 
@@ -19,16 +20,16 @@ const APP_KEY = 'YOUR-SECRET-KEY';
 // トップURL
 const APP_URL = process.env.APPURL;
 
-// メール送信設定
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  secure: process.env.MAIL_SECURE,
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS
-  }
-});
+// // メール送信設定
+// const transporter = nodemailer.createTransport({
+//   host: process.env.MAIL_HOST,
+//   port: process.env.MAIL_PORT,
+//   secure: process.env.MAIL_SECURE,
+//   auth: {
+//     user: process.env.MAIL_USER,
+//     pass: process.env.MAIL_PASS
+//   }
+// });
 
 // ミドルウェアの設定(EXPRESSのPOSTデータの取得)
 app.use(express.json());
@@ -250,14 +251,15 @@ app.post('/register', registrationValidationRules, (req, res) => {
 
     
 
-    // 本登録メールを送信
-    transporter.sendMail({
-      from: 'from@example.com',
-      // to: user.email,
-      to: 'to@example.com',
-      text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
-      subject: '本登録メール',
-    });
+    // // 本登録メールを送信
+    // transporter.sendMail({
+    //   from: 'from@example.com',
+    //   // to: user.email,
+    //   to: 'to@example.com',
+    //   text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
+    //   subject: '本登録メール',
+    // });
+    mailsendModule(verificationUrl);
 
     return res.json({
       result: true
